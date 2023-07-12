@@ -1,3 +1,79 @@
-div { 
-    text-align: center;
+.main { 
+    width: 450px;
+    height: 525px;
+    border: 2px solid black;
+    background-color: pink;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
+body { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.display { 
+    padding: 20px;
+    margin: 20px;
+    background-color: white;
+    border: 1px solid blue;
+    border-radius: 10px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 25px;
+    height: 20px;
+    
+}
+
+.upper { 
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.clear,.delete { 
+    padding: 20px;
+    width: 190px;
+    margin-top: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s;
+    cursor: pointer;
+} 
+.clear:hover  {
+    background-color: rgba(0, 0, 255, 0.5);
+}
+.delete:hover {
+    background-color: rgba(0, 100, 0, 0.5)
+}
+
+.clear { 
+    background-color: blue;
+}
+.delete { 
+    background-color: darkgreen;
+}
+
+.mainbuttons { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 5px;
+   
+}
+.mainbuttons button { 
+    padding: 20px;
+    width: 90px;
+    margin-top: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: gray;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border-radius: 10px;
+}
+.mainbuttons button:hover {
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
