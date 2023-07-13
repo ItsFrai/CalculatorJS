@@ -1,108 +1,83 @@
-let deletet = document.querySelector('.delete');
-deletet.addEventListener('click', deleteVal);
+document.addEventListener("DOMContentLoaded", function() {
+  let clear = document.querySelector('.clear');
+  let deletet = document.querySelector('.delete');
+  let equals = document.querySelector('.equal');
+  let decimal = document.querySelector('.decimal');
 
-let clear = document.querySelector('.clear');
-clear.addEventListener('click', clearButton);
+  let numbers = document.querySelectorAll('.btn-number');
+  let operators = document.querySelectorAll('.btn-operator');
 
-let equals = document.querySelector('.equal');
-equals.addEventListener('click', calculate);
+  let previousScreen = document.querySelector('.previous');
+  let currentScreen = document.querySelector('.current');
 
-let screen = document.querySelector('.display');
-let mainbuttons = document.querySelectorAll(".mainbuttons button");
+  numbers.forEach((number) => number.addEventListener('click', function(e){
+      handleNumber(e.target.textContent)
+      currentScreen.textContent = currentValue;
+  }))
 
-mainbuttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      if (button.textContent !== "=") {
-        appendNumber(button.textContent);
-      }
-    });
+  operators.forEach((op) => op.addEventListener('click', function(e) { 
+    handleOperation(e.target.textContent)
+    previousScreen.textContent = previousValue + " " + operator;
+    currentScreen.textContent = currentValue;
+  }))
+
+  clear.addEventListener('click', function() { 
+    previousValue = '';
+    currentValue = '';
+    operator = '';
+    previousScreen.textContent = previousValue;
+    currentScreen.textContent = currentValue;
   });
-  
-
-function appendNumber(number) {
-    if (screen.textContent.trim() === '0') {
-        screen.textContent = '';
-    } 
-    screen.textContent += number;
-}
-
-function deleteVal() {
-    if (screen.textContent === null) {
-        return;
-    } else {
-        screen.textContent = screen.textContent.trim().slice(0, -1);
+  equals.addEventListener('click', function() { 
+    calculate()
+    previousScreen.textContent = '';
+    currentScreen.textContent = previousValue;
+  })
+  deletet.addEventListener('click', function() { 
+    if (currentValue == null) { 
+      return
+    } else { 
+      currentValue = currentValue.slice(0,-1);
+      currentScreen.textContent = currentValue;
     }
-}
+  })
+  decimal.addEventListener('click', function() { 
+    currentValue += '.';
+    currentScreen.textContent = currentValue;
+  })
+})
 
-function clearButton() {
-    screen.textContent = '0';
-}
-
-let fullSum = 0;
-let hasCalculated = false;
-
-function calculate() {
-    let expression = screen.textContent;
-    if (expression === '') {
-        return;
-    }
-
-    let result = evaluateExpression(expression);
-    screen.textContent = result;
-}
-
-function evaluateExpression(expression) {
-    expression = expression.replace(/\s/g, '');
-  
-    const operators = ['+', '-', '\u00D7', '\u00F7'];
-    let operator;
-    let numbers;
-  
-    for (const op of operators) {
-      const index = expression.indexOf(op);
-      if (index !== -1) {
-        operator = op;
-        numbers = expression.split(op);
-        break;
-      }
-    }
-  
-    if (!operator || numbers.length !== 2) {
-      return 'Error: Invalid expression';
-    }
-  
-    const num1 = parseFloat(numbers[0]);
-    const num2 = parseFloat(numbers[1]);
-  
-    switch (operator) {
-      case '+':
-        return add(num1, num2);
-      case '-':
-        return subtract(num1, num2);
-      case '\u00D7':
-        return multiply(num1, num2);
-      case '\u00F7':
-        return divide(num1, num2);
-      default:
-        return 'Error: Invalid operator';
-    }
+function handleNumber(num) { 
+  if (currentValue.length <= 10){
+  currentValue += num;
   }
-function add(a, b) {
-    return a + b;
+}
+function handleOperation(op) { 
+  if (operator && currentValue) {
+    calculate();
+  }
+    operator = op;
+    previousValue = currentValue;
+    currentValue = ''
 }
 
-function subtract(a, b) {
-    return a - b;
+function calculate() { 
+  previousValue = Number(previousValue);
+  currentValue = Number(currentValue);
+
+  if (operator === '+') {
+    previousValue += currentValue;
+  } else if (operator === "-") { 
+    previousValue -= currentValue;
+  } else if (operator === "\u00D7") {
+    previousValue *= currentValue;
+  } else { 
+    previousValue /= currentValue;
+  }
+  previousValue = previousValue.toString();
+  currentValue = previousValue.toString();
 }
 
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    if (b === 0) {
-        return 'Error: Division by zero';
-    }
-    return a / b;
-}
-  
+let operator = '';
+let previousValue = '';
+let currentValue = '';

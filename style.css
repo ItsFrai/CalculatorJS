@@ -77,3 +77,10 @@ body {
     background-color: rgba(128, 128, 128, 0.5);
 }
 
+.current { 
+    font-size: 20px;
+}
+.previous { 
+    font-size: 13px;
+}
+
